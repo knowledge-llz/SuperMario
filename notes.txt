@@ -1,0 +1,29 @@
+        # TODO player update:
+        if keys[pygame.K_RIGHT]:
+            self.state = 'walk'
+            self.x_vel = 5
+            self.y_vel = 0
+            self.frames = self.right_frames
+        if keys[pygame.K_LEFT]:
+            self.state = 'walk'
+            self.x_vel = -5
+            self.y_vel = 0
+            self.frames = self.left_frames
+        if keys[pygame.K_SPACE]:
+            self.state = 'jump'
+            self.y_vel = -5
+
+        if self.state == 'walk':
+            if self.current_time - self.walking_timer > 100:
+                self.walking_timer = self.current_time
+                self.frame_index = (self.frame_index + 1) % 4
+        if self.state == 'jump':
+            self.frame_index = 4
+
+        self.image = self.frames[self.frame_index]
+
+        # TODO workaround will move to level.py for collision detection
+        if self.rect.bottom > C.GROUND_HEIGHT:
+            self.rect.bottom = C.GROUND_HEIGHT
+            self.y_vel = 0
+            self.state = 'walk'
